@@ -1,0 +1,13 @@
+.text-container {
+  max-width: 550px;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+@media (min-width: 1050px) {
+  .text-container {
+    width: 700px;
+    margin-right: 150px;
+  }
+}
+

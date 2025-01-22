@@ -16,7 +16,8 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
-    comments: Comment;
+    'case-studies': CaseStudy;
+    projects: Project;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -32,7 +33,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    comments: CommentsSelect<false> | CommentsSelect<true>;
+    'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -46,11 +48,11 @@ export interface Config {
   };
   globals: {
     header: Header;
-    footer: Footer;
+    'post-highlight': PostHighlight;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
+    'post-highlight': PostHighlightSelect<false> | PostHighlightSelect<true>;
   };
   locale: null;
   user: User & {
@@ -87,35 +89,14 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
+    type: 'none' | 'caseStudyHero';
+    title: string;
+    role?: string | null;
+    duration?: string | null;
+    teamMember?:
       | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
-            url?: string | null;
-            label: string;
-            appearance?: ('default' | 'outline') | null;
-          };
+          name?: string | null;
+          image?: (number | null) | Media;
           id?: string | null;
         }[]
       | null;
@@ -263,6 +244,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  type: 'caseStudy' | 'fullWidth';
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
@@ -306,6 +288,8 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: number | Media;
+  caption?: string | null;
+  height?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -331,13 +315,13 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
+  relationTo?: 'case-studies' | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
-        relationTo: 'posts';
-        value: number | Post;
+        relationTo: 'case-studies';
+        value: number | CaseStudy;
       }[]
     | null;
   id?: string | null;
@@ -365,27 +349,26 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "case-studies".
  */
-export interface Post {
+export interface CaseStudy {
   id: number;
   title: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  hero: {
+    type: 'none' | 'caseStudyHero';
+    title: string;
+    role?: string | null;
+    duration?: string | null;
+    teamMember?:
+      | {
+          name?: string | null;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+    media?: (number | null) | Media;
   };
-  relatedPosts?: (number | Post)[] | null;
+  layout?: (ContentBlock | MediaBlock)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
     title?: string | null;
@@ -616,20 +599,88 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "comments".
+ * via the `definition` "posts".
  */
-export interface Comment {
+export interface Post {
   id: number;
-  content: string;
-  author: {
-    name: string;
-    email: string;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
   };
-  post: number | Post;
-  isApproved?: boolean | null;
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  hero: {
+    type: 'none' | 'caseStudyHero';
+    title: string;
+    role?: string | null;
+    duration?: string | null;
+    teamMember?:
+      | {
+          name?: string | null;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+    media?: (number | null) | Media;
+  };
+  layout?: (ContentBlock | MediaBlock)[] | null;
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -727,8 +778,12 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
-        relationTo: 'comments';
-        value: number | Comment;
+        relationTo: 'case-studies';
+        value: number | CaseStudy;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -798,20 +853,14 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        richText?: T;
-        links?:
+        title?: T;
+        role?: T;
+        duration?: T;
+        teamMember?:
           | T
           | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
+              name?: T;
+              image?: T;
               id?: T;
             };
         media?: T;
@@ -844,6 +893,7 @@ export interface PagesSelect<T extends boolean = true> {
         content?:
           | T
           | {
+              type?: T;
               columns?:
                 | T
                 | {
@@ -869,6 +919,8 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               media?: T;
+              caption?: T;
+              height?: T;
               id?: T;
               blockName?: T;
             };
@@ -1057,21 +1109,167 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "comments_select".
+ * via the `definition` "case-studies_select".
  */
-export interface CommentsSelect<T extends boolean = true> {
-  content?: T;
-  author?:
+export interface CaseStudiesSelect<T extends boolean = true> {
+  title?: T;
+  hero?:
     | T
     | {
-        name?: T;
-        email?: T;
+        type?: T;
+        title?: T;
+        role?: T;
+        duration?: T;
+        teamMember?:
+          | T
+          | {
+              name?: T;
+              image?: T;
+              id?: T;
+            };
+        media?: T;
       };
-  post?: T;
-  isApproved?: T;
+  layout?:
+    | T
+    | {
+        content?:
+          | T
+          | {
+              type?: T;
+              columns?:
+                | T
+                | {
+                    size?: T;
+                    richText?: T;
+                    enableLink?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        mediaBlock?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              height?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  categories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  hero?:
+    | T
+    | {
+        type?: T;
+        title?: T;
+        role?: T;
+        duration?: T;
+        teamMember?:
+          | T
+          | {
+              name?: T;
+              image?: T;
+              id?: T;
+            };
+        media?: T;
+      };
+  layout?:
+    | T
+    | {
+        content?:
+          | T
+          | {
+              type?: T;
+              columns?:
+                | T
+                | {
+                    size?: T;
+                    richText?: T;
+                    enableLink?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        mediaBlock?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              height?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  categories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1301,6 +1499,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  logo?: (number | null) | Media;
+  name?: string | null;
   navItems?:
     | {
         link: {
@@ -1313,6 +1513,22 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        icon: number | Media;
+        subItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1321,11 +1537,11 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
+ * via the `definition` "post-highlight".
  */
-export interface Footer {
+export interface PostHighlight {
   id: number;
-  navItems?:
+  highlightedPosts?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -1337,6 +1553,8 @@ export interface Footer {
           url?: string | null;
           label: string;
         };
+        title: string;
+        image: number | Media;
         id?: string | null;
       }[]
     | null;
@@ -1348,6 +1566,8 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  name?: T;
   navItems?:
     | T
     | {
@@ -1359,6 +1579,21 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+            };
+        icon?: T;
+        subItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
@@ -1368,10 +1603,10 @@ export interface HeaderSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
+ * via the `definition` "post-highlight_select".
  */
-export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+export interface PostHighlightSelect<T extends boolean = true> {
+  highlightedPosts?:
     | T
     | {
         link?:
@@ -1383,6 +1618,8 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        title?: T;
+        image?: T;
         id?: T;
       };
   updatedAt?: T;

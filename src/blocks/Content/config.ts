@@ -66,6 +66,23 @@ export const Content: Block = {
   interfaceName: 'ContentBlock',
   fields: [
     {
+      name: 'type',
+      type: 'select',
+      defaultValue: 'caseStudy',
+      label: 'Type',
+      options: [
+        {
+          label: 'Case study',
+          value: 'caseStudy',
+        },
+        {
+          label: 'Full width',
+          value: 'fullWidth',
+        }
+      ],
+      required: true,
+    },
+    {
       name: 'columns',
       type: 'array',
       fields: columnFields,

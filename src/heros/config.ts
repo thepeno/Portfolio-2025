@@ -1,14 +1,5 @@
 import type { Field } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { linkGroup } from '@/fields/linkGroup'
-
 export const hero: Field = {
   name: 'hero',
   type: 'group',
@@ -16,7 +7,7 @@ export const hero: Field = {
     {
       name: 'type',
       type: 'select',
-      defaultValue: 'lowImpact',
+      defaultValue: 'caseStudyHero',
       label: 'Type',
       options: [
         {
@@ -24,45 +15,51 @@ export const hero: Field = {
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
-        },
-        {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
+          label: 'Case Study Hero',
+          value: 'caseStudyHero',
         },
       ],
       required: true,
     },
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
+      label: 'Title',
+      name: 'title',
+      type: 'text',
+      required: true,
     },
-    linkGroup({
-      overrides: {
-        maxRows: 2,
-      },
-    }),
+    {
+      label: 'Role',
+      name: 'role',
+      type: 'text',
+    },
+    {
+      label: 'Duration',
+      name: 'duration',
+      type: 'text',
+    },
+    {
+      label: 'Team member',
+      name: 'teamMember',
+      type: 'array',
+      fields: [
+        {
+          label: 'Team member name',
+          name: 'name',
+          type: 'text',
+        },
+        {
+          label: 'Team member image',
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        }
+      ]
+    },
     {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'caseStudyHero'].includes(type),
       },
       relationTo: 'media',
       required: true,

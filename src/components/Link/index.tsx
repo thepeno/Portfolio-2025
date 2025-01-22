@@ -3,7 +3,8 @@ import { cn } from 'src/utilities/cn'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Page, Post } from '@/payload-types'
+import type { Media, Page, Post } from '@/payload-types'
+import { ImageMedia } from '../Media/ImageMedia'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -18,6 +19,7 @@ type CMSLinkType = {
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
   url?: string | null
+  icon?: number | Media
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -31,13 +33,13 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    icon
   } = props
 
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${reference.value.slug
+      }`
       : url
 
   if (!href) return null
@@ -45,19 +47,27 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
+
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+        {icon &&
+          <ImageMedia imgClassName="mr-2" resource={icon} width={22} height={22} />
+        }
         {label && label}
         {children && children}
       </Link>
     )
   }
 
+
   return (
     <Button asChild className={className} size={size} variant={appearance}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+        {icon &&
+          <ImageMedia imgClassName="mr-2" resource={icon} width={22} height={22} />
+        }
         {label && label}
         {children && children}
       </Link>

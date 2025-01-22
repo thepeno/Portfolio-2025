@@ -1,0 +1,27 @@
+.image-container {
+  max-width: 550px;
+  margin-right: 0px;
+  padding-right: 0;
+  margin-left: 0 !important;
+  padding-bottom: 32px;
+}
+
+@media (min-width: 1050px) {
+  .image-container {
+    max-width: 550px;
+    margin-right: 150px;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 1250px) {
+  .image-container {
+    max-width: 745px;
+    margin-right: 150px;
+  }
+
+  .caption {
+    margin-left: 97.5px;
+  }
+}
+

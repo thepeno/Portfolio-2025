@@ -1,12 +1,13 @@
 import type { StaticImageData } from 'next/image'
 
+import './Component.css';
+
 import { cn } from 'src/utilities/cn'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
 
-import { Media } from '../../components/Media'
+import { ImageMedia } from '@/components/Media/ImageMedia'
 
 type Props = MediaBlockProps & {
   breakout?: boolean
@@ -20,44 +21,48 @@ type Props = MediaBlockProps & {
 
 export const MediaBlock: React.FC<Props> = (props) => {
   const {
-    captionClassName,
     className,
     enableGutter = true,
     imgClassName,
     media,
     staticImage,
-    disableInnerContainer,
+    caption,
+    height
   } = props
 
-  let caption
-  if (media && typeof media === 'object') caption = media.caption
+  let imageHeight = 400
+
+  if (height) {
+    imageHeight = height
+  }
+
 
   return (
     <div
       className={cn(
-        '',
+        'image-container pl-0 relative',
         {
           container: enableGutter,
         },
         className,
       )}
+      style={{ height: `${imageHeight}px` }}
     >
-      <Media
-        imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-        resource={media}
-        src={staticImage}
-      />
+      <div className='relative h-full'>
+        <ImageMedia
+          imgClassName={`border object-cover border-border rounded-[12px] ` + imgClassName}
+          resource={media}
+          src={staticImage}
+          fill
+        />
+      </div>
       {caption && (
         <div
-          className={cn(
-            'mt-6',
-            {
-              container: !disableInnerContainer,
-            },
-            captionClassName,
-          )}
+          className='caption mt-4'
         >
-          <RichText content={caption} enableGutter={false} />
+          <p className='italic'>
+            {caption}
+          </p>
         </div>
       )}
     </div>

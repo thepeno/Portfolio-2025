@@ -43,6 +43,9 @@ export default {
       },
     },
     extend: {
+      boxShadow: {
+        'nav': '0px 4px 20px 0px rgba(80, 64, 31, 0.08)',
+      },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
@@ -114,6 +117,12 @@ export default {
               fontWeight: 'normal',
               marginBottom: '0.25em',
             },
+            h4: {
+              fontSize: '1.25rem',
+              fontWeight: '450',
+              marginBottom: '0.75em',
+              lineHeight: '170%',
+            }
           },
         },
       }),

@@ -23,7 +23,7 @@ const collections: CollectionSlug[] = [
   'form-submissions',
   'search'
 ]
-const globals: GlobalSlug[] = ['header', 'footer']
+const globals: GlobalSlug[] = ['header']
 
 async function fetchFileByURL(url: string): Promise<File> {
   const res = await fetch(url, {
@@ -378,40 +378,6 @@ export const seed = async ({
                 relationTo: 'pages',
                 value: contactPage.id
               }
-            }
-          }
-        ]
-      }
-    })
-
-    // Update footer
-    payload.logger.info(`— Seeding footer...`)
-
-    await payload.updateGlobal({
-      slug: 'footer',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin'
-            }
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website'
-            }
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/'
             }
           }
         ]

@@ -10,15 +10,44 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'logo',
+      label: "Logo",
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'name',
+      label: "Name",
+      type: 'text',
+    },
+    {
       name: 'navItems',
+      label: "Navigation Items",
       type: 'array',
       fields: [
         link({
           appearances: false,
         }),
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: "subItems",
+          label: "Sub Navigation Items",
+          type: 'array',
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ]
+        }
       ],
       maxRows: 6,
     },
+    
   ],
   hooks: {
     afterChange: [revalidateHeader],

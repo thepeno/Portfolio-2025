@@ -6,17 +6,18 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Categories } from './collections/Categories'
-import { Comments } from './collections/Comments'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
+import { CaseStudies } from './collections/CaseStudies'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { PostHighlight } from './PostHighlight/config'
+import { Categories } from './collections/Categories'
+import { Projects } from './collections/Projects'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,6 +57,8 @@ export default buildConfig({
           height: 900,
         },
       ],
+      url: 'http://localhost:3000',
+      collections: ['case-studies', 'pages', 'posts', 'projects'],
     },
   },
   // This config helps us configure global or default features that the other editors can inherit
@@ -65,9 +68,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Comments],
+  collections: [Pages, Posts, Media, Categories, Users, CaseStudies, Projects],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, PostHighlight],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
