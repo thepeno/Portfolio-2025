@@ -4,11 +4,11 @@ import React from "react";
 
 import type { Header as HeaderType } from "@/payload-types";
 
-import { NavLink } from "@/components/NavLink";
 import { KeyPressListener } from "../KeyPressListener";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NavLink } from "./NavLink";
 
 export const HeaderNav: React.FC<{ header: HeaderType, expanded: boolean }> = ({ header, expanded }) => {
   const navItems = header?.navItems || [];

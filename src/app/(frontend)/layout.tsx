@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
           <LivePreviewListener />
-          <div className='flex min-h-full max-h-fit w-full flex-col-reverse md:flex-row'>
+          <div className='flex h-screen min-h-fit w-full flex-col-reverse md:flex-row'>
             <Header />
             <div className='z-20 md:z-0 flex-grow h-screen md:h-full pb-[68px] md:p-[28px] md:pl-0'>
               <div className='bg-white shadow-nav h-full overflow-y-auto rounded-b-[20px] p-8 text-[#1D180E] md:rounded-[20px] '>

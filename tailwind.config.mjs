@@ -43,6 +43,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'black-gradient': 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.3) 100%)',
+      },
       boxShadow: {
         'nav': '0px 4px 20px 0px rgba(80, 64, 31, 0.08)',
       },

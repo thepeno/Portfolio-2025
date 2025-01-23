@@ -57,7 +57,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
               <motion.p
                 className='mx-[10px] h-[19px] whitespace-nowrap'
                 initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1, transition: { delay: 0.25 } }}
+                whileInView={{ opacity: 1, transition: { delay: 0.35 } }}
               >
                 {header.name ? header.name : "No name added"}
               </motion.p> :
@@ -93,7 +93,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
       {headerExpanded &&
         <motion.p className='hidden md:block text-[#928B7D] text-sm leading-[150%] px-[10px]'
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, transition: { delay: 0.25 } }}
+          whileInView={{ opacity: 1, transition: { delay: 0.35 } }}
         >
           It started with an idea of having our own software,  developed and owned by the movement.
           <br /><br />

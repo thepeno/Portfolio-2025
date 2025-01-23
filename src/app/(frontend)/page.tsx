@@ -1,7 +1,9 @@
+import { PostHighlight } from "@/PostHighlight/Component";
+
 export default function HomePage() {
   return (
-    <p>
-      Hej
-    </p>
+    <div className="h-full">
+      <PostHighlight />
+    </div>
   )
 }

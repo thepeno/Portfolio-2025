@@ -4,12 +4,12 @@ import { Button, type ButtonProps } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
 
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 import type { Media, Page, Post } from '@/payload-types'
-import { ImageMedia } from '../Media/ImageMedia'
 import { usePathname } from 'next/navigation'
 import { SubNavLink } from './SubNavLink'
+import { ImageMedia } from '@/components/Media/ImageMedia'
 
 type NavLinkType = {
   children?: React.ReactNode
@@ -105,6 +105,7 @@ export const NavLink: React.FC<NavLinkType> = (props) => {
               <motion.div className={`hidden ${expanded && "md:flex"} w-[10px]`}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1, transition: { delay: 0.25 } }}
+                layout
               >
                 {expanded && label && label}
                 {expanded && children && children}
@@ -120,16 +121,24 @@ export const NavLink: React.FC<NavLinkType> = (props) => {
           </motion.div>
         </Link>
       </Button>
-      {
-        subItems && subItems?.length > 1 && (currentPath || childPath) &&
-        <div className={`hidden md:flex flex-col gap-2 my-2 ${expanded && "ml-3"}`}>
-          {
-            subItems.map(({ link }, i) => (
-              <SubNavLink key={i} {...link} number={i} parentNumber={number} expanded={expanded} />
-            ))
-          }
-        </div>
-      }
+      <AnimatePresence>
+        {
+          subItems && subItems?.length > 1 && (currentPath || childPath) &&
+          <div className={`${expanded && "ml-3"}`}>
+            <motion.div className={`hidden md:flex flex-col gap-2 my-2 overflow-clip`}
+              initial={{ height: 0, margin: 0, opacity: 0 }}
+              whileInView={{ height: 'auto', margin: "8px 0 8px 0", opacity: 1 }}
+              exit={{ height: 0, margin: 0, opacity: 0 }}
+            >
+              {
+                subItems.map(({ link }, i) => (
+                  <SubNavLink key={i} {...link} number={i} parentNumber={number} expanded={expanded} />
+                ))
+              }
+            </motion.div>
+          </div>
+        }
+      </AnimatePresence>
     </div>
   )
 }

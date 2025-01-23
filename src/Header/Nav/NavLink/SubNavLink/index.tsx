@@ -2,7 +2,7 @@
 
 import { Button, type ButtonProps } from '@/components/ui/button'
 import Link from 'next/link'
-import React from 'react'
+import React, { use, useEffect, useState } from 'react'
 
 import { motion } from "motion/react"
 
@@ -53,17 +53,28 @@ export const SubNavLink: React.FC<SubNavLink> = (props) => {
 
   const path = usePathname()
 
+  const [expandedDelayed, setExpandedDelayed] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setExpandedDelayed(false)
+    }, 350)
+  }, [expanded])
+
   return (
-    <Button asChild className={` py-2 px-[10px] rounded-[8px] text-[#382E1C] hover:bg-[#EFEEEC] h-fit ${href === path && "bg-white shadow-nav hover:bg-white"}`} size={size} variant="link">
+    <Button asChild className={`py-2 px-[10px] rounded-[8px] text-[#382E1C] hover:bg-[#EFEEEC] h-fit ${href === path && "bg-white shadow-nav hover:bg-white"}`} size={size} variant="link">
       <Link className="hover:no-underline" href={href || url || ''} {...newTabProps}>
         <motion.div
           className='w-full flex justify-between items-center font-normal'
           animate={{ flexDirection: expanded ? "row" : "column" }}
         >
-          <div className='flex items-center gap-[10]'>
+          <motion.div className={`hidden ${expanded && "md:flex"} w-[10px] items-center gap-[10]`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1, transition: { delay: expandedDelayed ? 0 : 0.35 } }}
+          >
             {expanded && label && label}
             {expanded && children && children}
-          </div>
+          </motion.div>
           <div className='flex items-center align-middle p-1'>
             <p className='w-4 text-center text-xs text-[#86785E] '>
               {parentNumber + 1 + (number + 1) * 0.1}
