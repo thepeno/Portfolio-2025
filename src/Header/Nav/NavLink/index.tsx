@@ -112,7 +112,6 @@ export const NavLink: React.FC<NavLinkType> = (props) => {
               </motion.div>
             </div>
             <motion.div className='hidden md:flex items-center align-middle p-1 bg-[#EFEEEC] rounded'
-              layout
             >
               <p className='w-4 text-center text-xs text-[#86785E] '>
                 {number + 1}

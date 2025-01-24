@@ -13,18 +13,18 @@ export async function PostHighlight() {
 
   return (
     <>
-      <div className='flex h-full gap-5'>
+      <div className='flex flex-col md:flex-row h-full gap-5'>
         {highlightedPosts && highlightedPosts.map(({ image, title, link, id }, i) => {
           let className = '';
           switch (i % 3) {
             case 0:
-              className = 'justify-start mb-[300px]';
+              className = 'justify-start mr-[90px] md:mb-[300px] md:mr-0';
               break;
             case 1:
               className = 'justify-center';
               break;
             case 2:
-              className = 'justify-end mt-[450px]';
+              className = 'justify-end ml-[90px] md:mt-[450px] md:ml-0';
               break;
           }
           return (

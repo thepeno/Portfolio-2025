@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import CaseStudyCard from '@/components/CaseStudyCard'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -25,12 +26,16 @@ export default async function Page() {
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div>
       <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Case studies</h1>
-        </div>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-7'>
+        {
+          caseStudy && caseStudy.docs.map(({ title, categories, meta, slug }, i) => (
+            <div key={i}>
+              <CaseStudyCard title={title} categories={categories} meta={meta} slug={`/case-studies/${slug}`} />
+            </div>
+          ))
+        }
       </div>
     </div>
   )
