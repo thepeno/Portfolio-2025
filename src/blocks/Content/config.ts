@@ -76,8 +76,8 @@ export const Content: Block = {
           value: 'caseStudy',
         },
         {
-          label: 'Full width',
-          value: 'fullWidth',
+          label: 'Centered',
+          value: 'centered',
         }
       ],
       required: true,

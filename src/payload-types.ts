@@ -244,7 +244,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
-  type: 'caseStudy' | 'fullWidth';
+  type: 'caseStudy' | 'centered';
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;

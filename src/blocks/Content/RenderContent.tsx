@@ -1,12 +1,12 @@
 import React from 'react'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
-import { FullWidth } from './FullWidth/Component'
+import { Centered } from './Centered/Component'
 import { CaseStudy } from './CaseStudy/Component'
 
 
 const contentOptions = {
-  fullWidth: FullWidth,
+  centered: Centered,
   caseStudy: CaseStudy,
 }
 
